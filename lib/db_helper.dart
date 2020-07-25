@@ -31,7 +31,7 @@ class DBHelper{
   }
 
   _onCreate(Database db,int version) async{
-    await db.execute("CREATE TABLE $TABLE($ID INTEGER PRIMARY KEY,$FIRSTNAME TEXT,$LASTNAME TEXT,$ADDRESS TEXT,$PINCODE TEXT,$MOBILENUMBER TEXT)");
+    await db.execute("CREATE TABLE $TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT,$FIRSTNAME TEXT,$LASTNAME TEXT,$ADDRESS TEXT,$PINCODE TEXT,$MOBILENUMBER TEXT)");
   }
 
   Future<AddressClass> save(AddressClass employee) async{
@@ -52,7 +52,6 @@ class DBHelper{
         employees.add(AddressClass.fromMap(maps[i]));
       }
     }
-    //
     return employees;
   }
 

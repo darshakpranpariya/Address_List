@@ -21,11 +21,11 @@ class AddressClass{
   }
 
   AddressClass.fromMap(Map<String,dynamic> map){
-    id = map['id'];
-    firstName = map['firstName'];
-    lastName = map['lastName'];
-    address = map['address'];
-    pinCode = map['pinCode'];
-    mobileNumber = map['mobileNumber'];
+    this.id = map['id'];
+    this.firstName = map['firstname'];
+    this.lastName = map['lastname'];
+    this.address = map['address'];
+    this.pinCode = map['pincode'];
+    this.mobileNumber = map['mobilenumber'];
   }
 }

@@ -1,22 +1,32 @@
 import 'package:coruscate_task/address_class.dart';
 import 'package:coruscate_task/db_helper.dart';
+import 'package:coruscate_task/home_screen.dart';
 import 'package:flutter/material.dart';
 
 // Screen from which we can insert and update data...
 class AddNewAddress extends StatefulWidget {
+  bool isUpdating;
+  String firstname;
+  String lastname;
+  String address;
+  String pincode;
+  String mobilenumber;
+  int curUserId;
+
+  AddNewAddress({Key key,this.isUpdating,this.firstname,this.lastname,this.address,this.pincode,this.mobilenumber,this.curUserId}):super(key: key);
+
   @override
   _AddNewAddressState createState() => _AddNewAddressState();
 }
 
 class _AddNewAddressState extends State<AddNewAddress> {
-
   Future<List<AddressClass>> addresses;
-
   TextEditingController controllerFirstname = TextEditingController();
   TextEditingController controllerLastname = TextEditingController();
   TextEditingController controllerAddress = TextEditingController();
   TextEditingController controllerPincode = TextEditingController();
   TextEditingController controllerMobileNumber = TextEditingController();
+
 
   String firstname;
   String lastname;
@@ -27,32 +37,39 @@ class _AddNewAddressState extends State<AddNewAddress> {
  
   final formKey = new GlobalKey<FormState>();
   var dbHelper;
-  bool isUpdating;
+  // bool isUpdating;
 
   @override
   void initState() {
     super.initState();
     dbHelper = DBHelper();
-    isUpdating = false;
+    controllerFirstname.text = widget.firstname;
+    controllerLastname.text = widget.lastname;
+    controllerAddress.text = widget.address;
+    controllerPincode.text = widget.pincode;
+    controllerMobileNumber.text = widget.mobilenumber;
+    // isUpdating = false;
     // refreshList();
   }
 
   validate() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      if (isUpdating) {
-        AddressClass e = AddressClass(curUserId,firstname,lastname,address,pincode,mobilenumber);
+      if (widget.isUpdating) {
+        AddressClass e = AddressClass(widget.curUserId,firstname,lastname,address,pincode,mobilenumber);
         dbHelper.update(e);
         setState(() {
-          isUpdating = false;
+          widget.isUpdating = false;
         });
       } else {
         AddressClass e = AddressClass(null,firstname,lastname,address,pincode,mobilenumber);
         dbHelper.save(e);
       }
       clearName();
-      Navigator.pop(context,true);
-      // refreshList();
+      Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => HomeScreen()),
+  );
     }
   }
 
@@ -114,12 +131,12 @@ class _AddNewAddressState extends State<AddNewAddress> {
               children: <Widget>[
                 FlatButton(
                   onPressed: validate,
-                  child: Text(isUpdating ? 'UPDATE' : 'ADD'),
+                  child: Text(widget.isUpdating ? 'UPDATE' : 'ADD'),
                 ),
                 FlatButton(
                   onPressed: () {
                     setState(() {
-                      isUpdating = false;
+                      widget.isUpdating = false;
                     });
                     clearName();
                   },
